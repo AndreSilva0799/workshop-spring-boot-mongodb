@@ -49,4 +49,11 @@ public class UserResources {
 
     }
 
+    @DeleteMapping("/{id}")// agora o endpoind sera /users/id (id = um id especifico do banco)
+    public ResponseEntity<Void> deleteByid(@PathVariable String id) { // essa anotação serve para avisar o spring que o id passado no endpoint é um parametro do metodo
+
+       userService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
