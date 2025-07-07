@@ -1,6 +1,7 @@
 package com.nelioalves.workshopmongo.services;
 
 import com.nelioalves.workshopmongo.domain.User;
+import com.nelioalves.workshopmongo.dto.UserDTO;
 import com.nelioalves.workshopmongo.repository.UserRepository;
 import com.nelioalves.workshopmongo.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,14 @@ public class UserService {
     public User findById(String id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("User not found with id: " + id)); // retorna o user ou se não tiver lança a exception personalizada
+    }
+
+    public User insert(User user) {
+        return userRepository.insert(user);
+    }
+
+    public User fromDTO(UserDTO userDTO) {
+    return new User(userDTO.getId(), userDTO.getName(), userDTO.getEmail() );
     }
 
 }

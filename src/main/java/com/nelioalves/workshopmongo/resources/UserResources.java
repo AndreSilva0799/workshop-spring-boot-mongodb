@@ -5,11 +5,10 @@ import com.nelioalves.workshopmongo.dto.UserDTO;
 import com.nelioalves.workshopmongo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,18 +25,27 @@ public class UserResources {
 
         List<UserDTO> listDtos = users.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
 
-        for(UserDTO dto : listDtos) {
+        for (UserDTO dto : listDtos) {
             System.out.println(dto.toString());
         }
 
         return ResponseEntity.ok().body(listDtos); // retornando response entity resposta ok e o corpo d aresposta é a lista de users
     }
 
-    @GetMapping ("/{id}")// agora o endpoind sera /users/id (id = um id especifico do banco)
+    @GetMapping("/{id}")// agora o endpoind sera /users/id (id = um id especifico do banco)
     public ResponseEntity<UserDTO> findById(@PathVariable String id) { // essa anotação serve para avisar o spring que o id passado no endpoint é um parametro do metodo
 
         User user = userService.findById(id);
         return ResponseEntity.ok().body(new UserDTO(user));
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> insert(@RequestBody UserDTO userDTO) { // RequestBody serve para esse endpoint aceitar o objeto
+        User obj = userService.fromDTO(userDTO); // assim estou convertendo o Dto para user
+
+        obj = userService.insert(obj);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+        return ResponseEntity.created(uri).build();
 
     }
 
