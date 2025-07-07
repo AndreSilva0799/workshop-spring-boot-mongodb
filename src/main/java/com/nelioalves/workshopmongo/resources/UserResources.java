@@ -6,6 +6,7 @@ import com.nelioalves.workshopmongo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,4 +32,13 @@ public class UserResources {
 
         return ResponseEntity.ok().body(listDtos); // retornando response entity resposta ok e o corpo d aresposta é a lista de users
     }
+
+    @GetMapping ("/{id}")// agora o endpoind sera /users/id (id = um id especifico do banco)
+    public ResponseEntity<UserDTO> findById(@PathVariable String id) { // essa anotação serve para avisar o spring que o id passado no endpoint é um parametro do metodo
+
+        User user = userService.findById(id);
+        return ResponseEntity.ok().body(new UserDTO(user));
+
+    }
+
 }
