@@ -23,8 +23,10 @@ public class UserResources {
 
     @GetMapping // pra informar que esse é um endpoint rest do tipo GET
     public ResponseEntity<List<User>> findAll() { // response entity serve para retornar os cabeçalhos certinho e possiveis erros
-
-        List<User> users = userService.findAll(); // assim eu uso o meu metodo que esta na classe de serviço pra a minha lista de users no meu banco de dados atraves da repository
+        List<User> users = userService.findAll();// assim eu uso o meu metodo que esta na classe de serviço pra a minha lista de users no meu banco de dados atraves da repository
+        for (User user : users) {
+            System.out.println(user);
+        }
         return ResponseEntity.ok().body(users); // retornando response entity resposta ok e o corpo d aresposta é a lista de users
     }
 }

@@ -50,6 +50,10 @@ public class User implements Serializable {
         this.email = email;
     }
 
+    public String toString(){
+        return name + " " + email;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -61,4 +65,5 @@ public class User implements Serializable {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
 }
