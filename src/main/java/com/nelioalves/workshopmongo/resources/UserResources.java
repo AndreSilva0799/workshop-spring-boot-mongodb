@@ -32,7 +32,7 @@ public class UserResources {
         return ResponseEntity.ok().body(listDtos); // retornando response entity resposta ok e o corpo d aresposta é a lista de users
     }
 
-    @GetMapping("/{id}")// agora o endpoind sera /users/id (id = um id especifico do banco)
+    @GetMapping(value= "/{id}")// agora o endpoind sera /users/id (id = um id especifico do banco)
     public ResponseEntity<UserDTO> findById(@PathVariable String id) { // essa anotação serve para avisar o spring que o id passado no endpoint é um parametro do metodo
 
         User user = userService.findById(id);
@@ -49,11 +49,21 @@ public class UserResources {
 
     }
 
-    @DeleteMapping("/{id}")// agora o endpoind sera /users/id (id = um id especifico do banco)
+    @DeleteMapping(value = "/{id}")// agora o endpoind sera /users/id (id = um id especifico do banco)
     public ResponseEntity<Void> deleteByid(@PathVariable String id) { // essa anotação serve para avisar o spring que o id passado no endpoint é um parametro do metodo
 
        userService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Void> update(@RequestBody UserDTO userDTO, @PathVariable String id) { // RequestBody serve para esse endpoint aceitar o objeto
+        User obj = userService.fromDTO(userDTO); // assim estou convertendo o Dto para user
+        obj.setId(id);
+        obj = userService.update(obj);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+        return ResponseEntity.noContent().build();
+
     }
 
 }

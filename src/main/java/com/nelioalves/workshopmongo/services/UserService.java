@@ -38,6 +38,17 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    public User update(User obj) {
+        User newObj = findById(obj.getId()); // buscando no banco o obj por id
+        updateData(newObj, obj);
+        return userRepository.save(newObj);
+    }
+
+    private void updateData(User newObj, User obj) { // recebo os dois objetos, o que foi passado com valores alterados e o que buscamos no banco por id
+        newObj.setName(obj.getName()); // alterando o objeto que buscamos pelo id com os dados do objeto recebido
+        newObj.setEmail(obj.getEmail());
+    }
+
     public User fromDTO(UserDTO userDTO) {
     return new User(userDTO.getId(), userDTO.getName(), userDTO.getEmail() );
     }
