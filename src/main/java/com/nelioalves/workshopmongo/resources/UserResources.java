@@ -1,5 +1,6 @@
 package com.nelioalves.workshopmongo.resources;
 
+import com.nelioalves.workshopmongo.domain.Post;
 import com.nelioalves.workshopmongo.domain.User;
 import com.nelioalves.workshopmongo.dto.UserDTO;
 import com.nelioalves.workshopmongo.services.UserService;
@@ -64,6 +65,13 @@ public class UserResources {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.noContent().build();
 
+    }
+
+    @GetMapping(value= "/{id}/posts")// agora o endpoind sera /users/id (id = um id especifico do banco)
+    public ResponseEntity <List<Post>> findPostById(@PathVariable String id) { // essa anotação serve para avisar o spring que o id passado no endpoint é um parametro do metodo
+
+        User obj = userService.findById(id);
+        return ResponseEntity.ok().body(obj.getPosts());
     }
 
 }
