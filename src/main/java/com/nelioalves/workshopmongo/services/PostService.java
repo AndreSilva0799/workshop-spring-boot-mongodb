@@ -8,6 +8,8 @@ import com.nelioalves.workshopmongo.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service // pra identificar que é um service
 public class PostService {
 
@@ -21,10 +23,10 @@ public class PostService {
                 .orElseThrow(() -> new ObjectNotFoundException("User not found with id: " + id)); // retorna o user ou se não tiver lança a exception personalizada
     }
 
-
-
-    public User fromDTO(UserDTO userDTO) {
-    return new User(userDTO.getId(), userDTO.getName(), userDTO.getEmail() );
+    public List<Post> findByTitle(String text) {
+        return postRepository.findByTitleContainingIgnoreCase(text);
     }
+
+
 
 }

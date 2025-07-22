@@ -1,10 +1,13 @@
 package com.nelioalves.workshopmongo.resources;
 
 import com.nelioalves.workshopmongo.domain.Post;
+import com.nelioalves.workshopmongo.resources.util.URL;
 import com.nelioalves.workshopmongo.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController //identifica que a classe é um controller
 @RequestMapping(value = "/posts") // caminho do endpoint
@@ -20,5 +23,11 @@ public class PostResources {
         return ResponseEntity.ok().body(post);
     }
 
+    @GetMapping(value= "/titlesearch")
+    public ResponseEntity<List<Post>> findByTitle(@RequestParam (value="text", defaultValue = "") String text) {  // Request param com value é para mostrar que vai pegar o valor do campo text da url, se value não for informado por padrão será uma string vazia
+        text = URL.decodeParam(text);
+        List<Post> list = postService.findByTitle(text);
+        return ResponseEntity.ok().body(list);
+    }
 
 }
