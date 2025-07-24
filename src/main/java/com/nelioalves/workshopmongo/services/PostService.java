@@ -8,6 +8,7 @@ import com.nelioalves.workshopmongo.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service // pra identificar que é um service
@@ -25,6 +26,11 @@ public class PostService {
 
     public List<Post> findByTitle(String text) {
         return postRepository.findByTitle(text);
+    }
+
+    public List<Post> fullSearch(String text, Date minDate, Date maxDate) {
+        maxDate = new Date(maxDate.getTime() + 24 * 60 * 60 * 1000); // aqui serve para adicionar na data max as 24:00 por exemplo dia tal até 23:59
+        return postRepository.fullSearch(text, minDate, maxDate);
     }
 
 
